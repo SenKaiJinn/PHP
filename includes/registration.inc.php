@@ -4,13 +4,13 @@
 
 
 if (isset($_POST["frmRegistration"])) {
-   // Syntaxe classique
+// Syntaxe classique
 /*    if (isset($_POST["nom"])) {
-    $nom = $_POST["nom"];
+$nom = $_POST["nom"];
 }
 
 else {
-    $nom = "" ;
+$nom = "" ;
 }
 */
 
@@ -24,7 +24,7 @@ $nom = $_POST["nom"] ?? "";
 $prenom = $_POST["prenom"] ?? "";
 $mail = $_POST["mail"] ?? "";
 $mdp = $_POST["mdp"] ?? "";
- 
+
 
 $erreurs = array();
 
@@ -35,39 +35,60 @@ if ($mail == "") array_push($erreurs, "Veuillez saisir votre mail");
 if ($mdp == "") array_push($erreurs, "Veuillez saisir votre mot de passe");
 
 
-    if (count($erreurs) > 0){
-        $message = "<ul>";
-        for ($i = 0; $i < count($erreurs); $i++) {
-            $message .= "<li>"; 
-            $message .= $erreurs[$i];
-            $message .= "</li>";
-            
-        }
+if (count($erreurs) > 0){
+    $message = "<ul>";
+    for ($i = 0; $i < count($erreurs); $i++) {
+        $message .= "<li>"; 
+        $message .= $erreurs[$i];
+        $message .= "</li>";
+        
+    }
 
 /* deuxiéme methode 
 
 foreach($erreurs as $ligneMessage){
-    $message .= "<li>" ;
-    $message .= $ligneMessage;
-    $message .= "</li>";
+$message .= "<li>" ;
+$message .= $ligneMessage;
+$message .= "</li>";
 }
-  */    
+*/    
 
-        $message .= "</ul>";
-        echo $message;
-    }
+    $message .= "</ul>";
+    echo $message;
+}
 
-    else {
-        echo "Pas d'erreurs";
-    }
+else {
+    // mysqli_connect (adresse,utilisateur,mot de passe , base)
+    $mdp = sha1($mdp);
+    
+    $connection = mysqli_connect("localhost","phpdieppe","carbonyl76","phpdieppe");    
+
+
+
+
+    $requete = "INSERT INTO T_USERS
+    (USERNAME,USERFIRSTNAME,USEMAIL,USEPASSWORD,ID_ROLE)
+    VALUES ('$nom','$prenom','$mail','$mdp',3)";
+die($requete);
+
+
+if (!$connection) {
+    die("Erreur mysql" . mysqli_connect_errno() . " | " . mysqli_connect_error());
+}
+
+
+
+
+
+}
 
 
 
 }
 
 else {
-    echo "Je ne viens pas du formulaire";
-    include "frmRegistration.php";
+echo "Je ne viens pas du formulaire";
+include "frmRegistration.php";
 }
 
 ?>
