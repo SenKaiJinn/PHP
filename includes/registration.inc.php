@@ -36,13 +36,13 @@ if ($mdp == "") array_push($erreurs, "Veuillez saisir votre mot de passe");
 
 
 if (count($erreurs) > 0){
-    $message = "<ul>";
-    for ($i = 0; $i < count($erreurs); $i++) {
-        $message .= "<li>"; 
-        $message .= $erreurs[$i];
-        $message .= "</li>";
-        
-    }
+$message = "<ul>";
+for ($i = 0; $i < count($erreurs); $i++) {
+    $message .= "<li>"; 
+    $message .= $erreurs[$i];
+    $message .= "</li>";
+    
+}
 
 /* deuxiéme methode 
 
@@ -53,36 +53,47 @@ $message .= "</li>";
 }
 */    
 
-    $message .= "</ul>";
-    echo $message;
+$message .= "</ul>";
+echo $message;
 }
 
 else {
-    // mysqli_connect (adresse,utilisateur,mot de passe , base)
-    $mdp = sha1($mdp);
-    
-    $connection = mysqli_connect("localhost","phpdieppe","carbonyl76","phpdieppe");    
+// mysqli_connect (adresse,utilisateur,mot de passe , base)
+$mdp = sha1($mdp);
+
+$connection = mysqli_connect("localhost","phpdieppe","carbonyl76","phpdieppe");    
 
 
 
 
-    $requete = "INSERT INTO T_USERS
-    (USERNAME,USERFIRSTNAME,USEMAIL,USEPASSWORD,ID_ROLE)
-    VALUES ('$nom','$prenom','$mail','$mdp',3)";
+$requete = "INSERT INTO T_USERS
+(USERNAME,USERFIRSTNAME,USEMAIL,USEPASSWORD,ID_ROLE)
+VALUES ('$nom','$prenom','$mail','$mdp',3)";
+
+
+
+
+
+
 die($requete);
 
 
 if (!$connection) {
-    die("Erreur mysql" . mysqli_connect_errno() . " | " . mysqli_connect_error());
+die("Erreur mysql" . mysqli_connect_errno() . " | " . mysqli_connect_error());
+}
+else {
+if (mysqli_query($connection,$requete)) {
+    echo "données enregistrées";
+}
+else {
+echo "Erreur";
+include "frmRegistration.php";
 }
 
-
-
-
-
+mysqli_close($connection);
 }
 
-
+}
 
 }
 
